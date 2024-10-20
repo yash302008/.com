@@ -1,49 +1,59 @@
-const board = document.getElementById('chessboard');
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-const aiLevel = 'medium'; // 'easy', 'medium', 'hard'
+let character = { x: canvas.width / 2 - 15, y: canvas.height - 50, width: 30, height: 30 };
+let obstacles = [];
+let score = 0;
+let gameOver = false;
 
-function createBoard() {
-    for (let row = 0; row < 8; row++) {
-        for (let col = 0; col < 8; col++) {
-            const square = document.createElement('div');
-            square.className = 'square ' + ((row + col) % 2 === 0 ? 'white' : 'black');
-            square.addEventListener('click', () => playerMove(row, col));
-            board.appendChild(square);
-        }
+document.addEventListener('touchstart', moveCharacter);
+
+function moveCharacter(e) {
+    if (!gameOver) {
+        const touchX = e.touches[0].clientX;
+        character.x = touchX - character.width / 2;
     }
 }
 
-function playerMove(row, col) {
-    const squares = document.querySelectorAll('.square');
-    if (!squares[row * 8 + col].innerHTML) {
-        squares[row * 8 + col].innerHTML = '♘'; // Player's move (Knight)
-        setTimeout(aiMove, 500); // AI move after 500ms
-    }
+function spawnObstacle() {
+    const x = Math.random() * (canvas.width - 30);
+    obstacles.push({ x, y: 0, width: 30, height: 30 });
 }
 
-function aiMove() {
-    const squares = document.querySelectorAll('.square');
-    let row, col;
+function update() {
+    if (!gameOver) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (aiLevel === 'hard') {
-        // Simple strategy: move to first empty square found
-        for (let i = 0; i < squares.length; i++) {
-            row = Math.floor(i / 8);
-            col = i % 8;
-            if (!squares[row * 8 + col].innerHTML) {
-                squares[row * 8 + col].innerHTML = '♞';
-                return;
+        ctx.fillStyle = 'lime';
+        ctx.fillRect(character.x, character.y, character.width, character.height);
+
+        obstacles.forEach((obstacle, index) => {
+            obstacle.y += 3;
+            ctx.fillStyle = 'red';
+            ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+            if (obstacle.y > canvas.height) {
+                obstacles.splice(index, 1);
+                score += 10;
             }
-        }
-    } else {
-        // Random move for 'easy' and 'medium' levels
-        do {
-            row = Math.floor(Math.random() * 8);
-            col = Math.floor(Math.random() * 8);
-        } while (squares[row * 8 + col].innerHTML);
 
-        squares[row * 8 + col].innerHTML = '♞'; // AI's move (Knight)
+            if (character.x < obstacle.x + obstacle.width && character.x + character.width > obstacle.x &&
+                character.y < obstacle.y + obstacle.height && character.y + character.height > obstacle.y) {
+                gameOver = true;
+            }
+        });
+
+        if (Math.random() < 0.02) {
+            spawnObstacle();
+        }
+
+        requestAnimationFrame(update);
+    } else {
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        ctx.fillText('Game Over', canvas.width / 2 - 80, canvas.height / 2);
+        ctx.fillText('Score: ' + score, canvas.width / 2 - 60, canvas.height / 2 + 40);
     }
 }
 
-createBoard();
+update();
