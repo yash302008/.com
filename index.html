@@ -1,13 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>yash kabadwal</title>
+  <title>Yash's Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .calculator {
+      display: inline-block;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .display {
+      width: 100%;
+      height: 40px;
+      font-size: 18px;
+      margin-bottom: 10px;
+      text-align: right;
+    }
+    .button {
+      width: 60px;
+      height: 60px;
+      font-size: 18px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body> 
-    <h1>
-      <b>Yash kabadwal</b>
-    </h1>
+<body>
+  <h1>Yash's Calculator</h1>
+  <div class="calculator">
+    <input type="text" class="display" id="display" disabled>
+    <br>
+    <button class="button" onclick="appendNumber('1')">1</button>
+    <button class="button" onclick="appendNumber('2')">2</button>
+    <button class="button" onclick="appendNumber('3')">3</button>
+    <button class="button" onclick="performOperation('+')">+</button>
+    <br>
+    <button class="button" onclick="appendNumber('4')">4</button>
+    <button class="button" onclick="appendNumber('5')">5</button>
+    <button class="button" onclick="appendNumber('6')">6</button>
+    <button class="button" onclick="performOperation('-')">-</button>
+    <br>
+    <button class="button" onclick="appendNumber('7')">7</button>
+    <button class="button" onclick="appendNumber('8')">8</button>
+    <button class="button" onclick="appendNumber('9')">9</button>
+    <button class="button" onclick="performOperation('*')">*</button>
+    <br>
+    <button class="button" onclick="clearDisplay()">C</button>
+    <button class="button" onclick="appendNumber('0')">0</button>
+    <button class="button" onclick="calculateResult()">=</button>
+    <button class="button" onclick="performOperation('/')">/</button>
+  </div>
+
+  <script>
+    let currentInput = '';
+    let currentOperation = '';
+
+    function appendNumber(number) {
+      currentInput += number;
+      document.getElementById('display').value = currentInput;
+    }
+
+    function performOperation(operation) {
+      if (currentOperation === '') {
+        currentOperation = operation;
+        currentInput += ' ' + operation + ' ';
+      } else {
+        currentOperation = operation;
+        let lastChar = currentInput[currentInput.length - 1];
+        if (lastChar === '+' || lastChar === '-' || lastChar === '*' || lastChar === '/') {
+          currentInput = currentInput.slice(0, -1) + operation;
+        } else {
+          currentInput += ' ' + operation + ' ';
+        }
+      }
+      document.getElementById('display').value = currentInput;
+    }
+
+    function clearDisplay() {
+      currentInput = '';
+      currentOperation = '';
+      document.getElementById('display').value = '';
+    }
+
+    function calculateResult() {
+      try {
+        let result = eval(currentInput);
+        document.getElementById('display').value = result;
+        currentInput = result.toString();
+        currentOperation = '';
+      } catch (error) {
+        document.getElementById('display').value = 'Error';
+      }
+    }
+  </script>
 </body>
 </html>
