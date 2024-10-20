@@ -1,53 +1,33 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  header {
-    background-color: #333;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  nav ul li {
-    display: inline;
-    margin: 0 15px;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  section {
-    padding: 20px;
-  }
-  
-  #contact-form {
     display: flex;
-    flex-direction: column;
-  }
-  
-  #contact-form label,
-  #contact-form input,
-  #contact-form textarea {
-    margin: 5px 0;
-  }
-  
-  button {
-    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
+    color: #fff;
+}
+
+#chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 80px);
+    grid-template-rows: repeat(8, 80px);
+    gap: 0;
+    border: 2px solid #fff;
+}
+
+.square {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.white {
+    background-color: #f0d9b5;
+}
+
+.black {
+    background-color: #b58863;
+}
