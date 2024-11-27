@@ -39,7 +39,44 @@ main {
     padding: 1em;
     max-width: 800px;
     margin: 0 auto;
-    text-align: center;
+}
+
+section {
+    margin-bottom: 2em;
+}
+
+.portfolio-item {
+    margin: 2em 0;
+}
+
+.portfolio-item img {
+    max-width: 100%;
+    height: auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-top: 1em;
+}
+
+form input, form textarea, form button {
+    padding: 0.5em;
+    margin-top: 0.5em;
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #45a049;
 }
 
 footer {
@@ -52,8 +89,13 @@ footer {
     width: 100%;
 }
 
+/* Responsive Styles */
 @media (max-width: 600px) {
     nav ul {
         flex-direction: column;
+    }
+
+    nav ul li {
+        margin: 0;
     }
 }
